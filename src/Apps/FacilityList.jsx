@@ -48,7 +48,7 @@ function FacilityList() {
         {facilities.length > 0 ? (
           facilities.map((facility) => (
             <div className="col-md-4 mb-4" key={facility.id}>
-              <div className="card h-100" onClick={() => handleCardClick(facility.id)}> {/* Handle card click */}
+              <div className="card h-100" onClick={() => handleCardClick(facility.id)}>
                 <img
                   src={facility.imagePath}
                   className="card-img-top"

@@ -1,16 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import CreateDateHours from "./Apps/CreateDateHours";
 import DateHoursList from "./Apps/DateHoursList";
 import UpdateDateHours from "./Apps/UpdateDateHours";
-import FacilityList from "./Apps/FacilityList"; // Import FacilityList component
+import FacilityList from "./Apps/FacilityList";
 import PageBooking from "./Apps/PageBooking";
+import TodayDayName from "./Apps/TodayDayName";
+import DateHoursFetcher from "./Apps/DateHoursFetcher";
 
 function App() {
+  // State to hold the name of the day
+  const [dayName, setDayName] = useState('');
+
+  // Function to update the day name
+  const updateDayName = () => {
+    const today = new Date();
+    const dayNames = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+    setDayName(dayNames[today.getDay()]);
+  };
+
+  // Update the day name when the component mounts
+  React.useEffect(() => {
+    updateDayName();
+  }, []);
+
   return (
     <Router>
       <div>
-        {/* Navigation Menu */}
         <nav>
           <ul>
             <li>
@@ -23,18 +39,25 @@ function App() {
               <Link to="/update">Update Date Hours</Link>
             </li>
             <li>
-              <Link to="/facilities">Facility List</Link> {/* New Link for Facility List */}
+              <Link to="/facilities">Facility List</Link>
+            </li>
+            <li>
+              <Link to="/todayDayName">Name of Today</Link>
+            </li>
+            <li>
+              <Link to="/dateHoursFetcher">Date Hours Fetcher</Link>
             </li>
           </ul>
         </nav>
 
-        {/* Define routes for each component */}
         <Routes>
           <Route path="/create" element={<CreateDateHours />} />
           <Route path="/list" element={<DateHoursList />} />
           <Route path="/update" element={<UpdateDateHours />} />
-          <Route path="/facilities" element={<FacilityList />} /> {/* New Route for Facility List */}
-          <Route path="/pageBooking/:facilityId" element={<PageBooking />} /> {/* Dynamic route for PageBooking */}
+          <Route path="/facilities" element={<FacilityList />} />
+          <Route path="/pageBooking/:facilityId" element={<PageBooking />} />
+          <Route path="/todayDayName" element={<TodayDayName dayName={dayName} />} />
+          <Route path="/dateHoursFetcher" element={<DateHoursFetcher day={dayName} />} />
         </Routes>
       </div>
     </Router>
