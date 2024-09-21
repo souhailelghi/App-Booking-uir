@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import CreateDateHours from "./Apps/CreateDateHours";
 import DateHoursList from "./Apps/DateHoursList";
 import UpdateDateHours from "./Apps/UpdateDateHours";
-import FacilityList from "./Apps/FacilityList";
+import SportList from "./Apps/SportList";
 import PageBooking from "./Apps/PageBooking";
 import TodayDayName from "./Apps/TodayDayName";
 import DateHoursFetcher from "./Apps/DateHoursFetcher";
@@ -39,7 +39,7 @@ function App() {
               <Link to="/update">Update Date Hours</Link>
             </li>
             <li>
-              <Link to="/facilities">Facility List</Link>
+              <Link to="/facilities">Sport List</Link>
             </li>
             <li>
               <Link to="/todayDayName">Name of Today</Link>
@@ -54,8 +54,8 @@ function App() {
           <Route path="/create" element={<CreateDateHours />} />
           <Route path="/list" element={<DateHoursList />} />
           <Route path="/update" element={<UpdateDateHours />} />
-          <Route path="/facilities" element={<FacilityList />} />
-          <Route path="/pageBooking/:facilityId" element={<PageBooking />} />
+          <Route path="/facilities" element={<SportList />} />
+          <Route path="/pageBooking/:SportId" element={<PageBooking />} />
           <Route path="/todayDayName" element={<TodayDayName dayName={dayName} />} />
           <Route path="/dateHoursFetcher" element={<DateHoursFetcher day={dayName} />} />
         </Routes>

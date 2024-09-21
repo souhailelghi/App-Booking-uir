@@ -2,66 +2,66 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const PageBooking = () => {
-    const { facilityId } = useParams();
+    const { SportId } = useParams(); // Get the Sport ID from URL parameters
 
     return (
         <div>
             <h1>DateHours & Booking Management</h1>
-            <p>Selected Facility ID: {facilityId}</p>
-            <BookingForm facilityId={facilityId} />
+            <p>Selected Sport ID: {SportId}</p>
+            <BookingForm SportId={SportId} />
         </div>
     );
 };
 
-const BookingForm = ({ facilityId }) => {
+const BookingForm = ({ SportId }) => {
     const [dateHoursData, setDateHoursData] = useState([]);
     const [timeSlots, setTimeSlots] = useState([]);
-    const [status, setStatus] = useState(0);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchDateHours = async () => {
             try {
-                const response = await fetch('https://localhost:7097/api/DateHours');
+                const response = await fetch(`https://localhost:7097/api/DateHours/GetAllDateHoursBySportId/${SportId}`);
                 if (!response.ok) throw new Error('Network response was not ok');
                 const data = await response.json();
                 setDateHoursData(data);
-                updateTimeSlots(data); // Update time slots for today after fetching data
+                updateTimeSlots(data);
             } catch (error) {
-                console.error('Error fetching date hours:', error);
-                alert('Error fetching date hours: ' + error.message);
+                setError('Error fetching date hours: ' + error.message);
+            } finally {
+                setLoading(false);
             }
         };
 
         fetchDateHours();
-    }, []);
+    }, [SportId]); // Depend on SportId to refetch when it changes
 
     const updateTimeSlots = (dateHoursData) => {
         const today = new Date();
         const dayNames = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
-        const todayDayName = dayNames[today.getDay()]; // Get today's day name
+        const todayDayName = dayNames[today.getDay()];
 
-        const selectedDateHours = dateHoursData.filter(d => d.day === todayDayName); // Filter for today's day
+        const selectedDateHours = dateHoursData.filter(d => d.day === todayDayName);
         const slots = selectedDateHours.flatMap(dateHours => 
             dateHours.timeRanges.map(tr => ({
-                value: `${facilityId}-${tr.hoursStart}-${tr.hoursEnd}`,
+                value: `${SportId}-${tr.hoursStart}-${tr.hoursEnd}`,
                 label: `${tr.hoursStart} - ${tr.hoursEnd}`
             }))
         );
-        setTimeSlots(slots); // Update time slots state
+        setTimeSlots(slots);
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        setIsSubmitting(true); // Disable button while submitting
+        setIsSubmitting(true);
 
         const formData = {
-            refCode: event.target.refCode.value,
             clientId: parseInt(event.target.clientId.value),
-            facilityId: parseInt(facilityId),
+            SportId: parseInt(SportId),
             dateFrom: event.target.timeSlot.value.split('-')[1],
             dateTo: event.target.timeSlot.value.split('-')[2],
-            status,
             dateCreated: new Date().toISOString(),
             dateUpdated: new Date().toISOString()
         };
@@ -78,17 +78,17 @@ const BookingForm = ({ facilityId }) => {
         } catch (error) {
             alert('Error creating booking: ' + error.message);
         } finally {
-            setIsSubmitting(false); // Re-enable button after submission
+            setIsSubmitting(false);
         }
     };
+
+    if (loading) return <p>Loading date hours...</p>;
+    if (error) return <p>{error}</p>;
 
     return (
         <>
             <h1>Create Booking</h1>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="refCode">Reference Code:</label>
-                <input type="text" id="refCode" name="refCode" required /><br /><br />
-                
                 <label htmlFor="clientId">Client ID:</label>
                 <input type="number" id="clientId" name="clientId" required /><br /><br />
                 
@@ -105,9 +105,6 @@ const BookingForm = ({ facilityId }) => {
                         <p>No available time slots for today.</p>
                     )}
                 </fieldset><br />
-                
-                <label htmlFor="status">Status:</label>
-                <input type="number" id="status" name="status" min="0" max="3" value={status} onChange={(e) => setStatus(parseInt(e.target.value))} required /><br /><br />
                 
                 <button type="submit" disabled={isSubmitting}>Submit</button>
             </form>

@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 function UpdateDateHours() {
   const [id, setId] = useState("");
-  const [facilityId, setFacilityId] = useState("");
+  const [SportId, setSportId] = useState("");
   const [day, setDay] = useState("");
   const [timeRanges, setTimeRanges] = useState([{ hoursStart: "", hoursEnd: "" }]);
 
@@ -12,7 +12,7 @@ function UpdateDateHours() {
       const response = await fetch(`https://localhost:7097/api/DateHours/${id}`);
       if (response.ok) {
         const data = await response.json();
-        setFacilityId(data.facilityId);
+        setSportId(data.SportId);
         setDay(data.day);
         setTimeRanges(data.timeRanges);
       } else {
@@ -37,7 +37,7 @@ function UpdateDateHours() {
 
     const updatedDateHours = {
       id: parseInt(id),
-      facilityId: parseInt(facilityId),
+      SportId: parseInt(SportId),
       day,
       timeRanges,
     };
@@ -87,12 +87,12 @@ function UpdateDateHours() {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Facility ID:</label>
+          <label className="form-label">Sport ID:</label>
           <input
             type="number"
             className="form-control"
-            value={facilityId}
-            onChange={(e) => setFacilityId(e.target.value)}
+            value={SportId}
+            onChange={(e) => setSportId(e.target.value)}
             required
           />
         </div>

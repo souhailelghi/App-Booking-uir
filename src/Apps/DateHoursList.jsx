@@ -37,7 +37,7 @@ function DateHoursList() {
           {dateHoursList.map((dateHours, index) => (
             <li key={index} className="list-group-item mb-3">
               <h5>
-                <strong>Facility ID:</strong> {dateHours.facilityId}
+                <strong>Sport ID:</strong> {dateHours.SportId}
               </h5>
               <p>
                 <strong>Day:</strong> {dateHours.day}

@@ -30,7 +30,7 @@ const DateHoursFetcher = ({ day }) => {
       <ul>
         {dateHours.map((dateHour) => (
           <li key={dateHour.id}>
-            <strong>{dateHour.day}</strong> (Facility ID: {dateHour.facilityId})<br />
+            <strong>{dateHour.day}</strong> (Sport ID: {dateHour.SportId})<br />
             <em>Created on: {new Date(dateHour.dateCreation).toLocaleString()}</em>
             <ul>
               {dateHour.timeRanges.map((timeRange) => (
