@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Import Link
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const SportForm = () => {
+    const navigate = useNavigate(); // Initialize useNavigate
     const [sportCode, setSportCode] = useState('');
     const [categoryId, setCategoryId] = useState('');
     const [imagePath, setImagePath] = useState('');
@@ -45,6 +46,8 @@ const SportForm = () => {
 
             const data = await response.json();
             alert(`Sport added successfully! ID: ${data.id}`);
+            // Redirect to CreateDateHours with SportId
+            navigate(`/create?SportId=${data.id}`);
         } catch (error) {
             setError('Error adding sport: ' + error.message);
         } finally {
@@ -57,86 +60,89 @@ const SportForm = () => {
             <h1>Add a New Sport</h1>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Sport Code:</label>
+                <div className="mb-3">
+                    <label className="form-label">Sport Code:</label>
                     <input
                         type="number"
+                        className="form-control"
                         value={sportCode}
                         onChange={(e) => setSportCode(e.target.value)}
                         required
                     />
                 </div>
-                <div>
-                    <label>Category ID:</label>
+                <div className="mb-3">
+                    <label className="form-label">Category ID:</label>
                     <input
                         type="number"
+                        className="form-control"
                         value={categoryId}
                         onChange={(e) => setCategoryId(e.target.value)}
                         required
                     />
                 </div>
-                <div>
-                    <label>Image Path:</label>
+                <div className="mb-3">
+                    <label className="form-label">Image Path:</label>
                     <input
                         type="text"
+                        className="form-control"
                         value={imagePath}
                         onChange={(e) => setImagePath(e.target.value)}
+                        required
                     />
                 </div>
-                <div>
-                    <label>Number of Players:</label>
+                <div className="mb-3">
+                    <label className="form-label">Number of Players:</label>
                     <input
                         type="number"
+                        className="form-control"
                         value={numberPlayer}
                         onChange={(e) => setNumberPlayer(e.target.value)}
                         required
                     />
                 </div>
-                <div>
-                    <label>Delay Time (minutes):</label>
+                <div className="mb-3">
+                    <label className="form-label">Delay Time:</label>
                     <input
                         type="number"
+                        className="form-control"
                         value={delayTime}
                         onChange={(e) => setDelayTime(e.target.value)}
                         required
                     />
                 </div>
-                <div>
-                    <label>Condition:</label>
+                <div className="mb-3">
+                    <label className="form-label">Condition:</label>
                     <input
                         type="text"
+                        className="form-control"
                         value={condition}
                         onChange={(e) => setCondition(e.target.value)}
+                        required
                     />
                 </div>
-                <div>
-                    <label>Name:</label>
+                <div className="mb-3">
+                    <label className="form-label">Name:</label>
                     <input
                         type="text"
+                        className="form-control"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         required
                     />
                 </div>
-                <div>
-                    <label>Description:</label>
+                <div className="mb-3">
+                    <label className="form-label">Description:</label>
                     <textarea
+                        className="form-control"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         required
                     />
                 </div>
-                <button type="submit" disabled={isSubmitting}>
+                <button type="submit" disabled={isSubmitting} className="btn btn-primary">
                     {isSubmitting ? 'Adding...' : 'Add Sport'}
                 </button>
             </form>
-
-            {/* Replace the button with a Link */}
-            <Link to="/create">
-                <button type="button">
-                    Create Date Hours
-                </button>
-            </Link>
         </div>
     );
 };
