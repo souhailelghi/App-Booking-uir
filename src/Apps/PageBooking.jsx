@@ -19,6 +19,8 @@ const BookingForm = ({ SportId }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [userId, setUserId] = useState("");
+    const [userIdList, setUserIdList] = useState("");
 
     useEffect(() => {
         const fetchDateHours = async () => {
@@ -36,7 +38,7 @@ const BookingForm = ({ SportId }) => {
         };
 
         fetchDateHours();
-    }, [SportId]); // Depend on SportId to refetch when it changes
+    }, [SportId]);
 
     const updateTimeSlots = (dateHoursData) => {
         const today = new Date();
@@ -44,7 +46,7 @@ const BookingForm = ({ SportId }) => {
         const todayDayName = dayNames[today.getDay()];
 
         const selectedDateHours = dateHoursData.filter(d => d.day === todayDayName);
-        const slots = selectedDateHours.flatMap(dateHours => 
+        const slots = selectedDateHours.flatMap(dateHours =>
             dateHours.timeRanges.map(tr => ({
                 value: `${SportId}-${tr.hoursStart}-${tr.hoursEnd}`,
                 label: `${tr.hoursStart} - ${tr.hoursEnd}`
@@ -53,35 +55,42 @@ const BookingForm = ({ SportId }) => {
         setTimeSlots(slots);
     };
 
+  
     const handleSubmit = async (event) => {
         event.preventDefault();
         setIsSubmitting(true);
-
+    
         const formData = {
-            clientId: parseInt(event.target.clientId.value),
+            UserId: userId,
             SportId: parseInt(SportId),
-            dateFrom: event.target.timeSlot.value.split('-')[1],
-            dateTo: event.target.timeSlot.value.split('-')[2],
-            dateCreated: new Date().toISOString(),
-            dateUpdated: new Date().toISOString()
+            BookingTime: new Date().toISOString(),
+            DateFrom: event.target.timeSlot.value.split('-')[1],
+            DateTo: event.target.timeSlot.value.split('-')[2],
+            UserIdList: userIdList.split(',').map(id => id.trim()).filter(Boolean) // Convert to array of GUIDs
         };
-
+    
         try {
-            const response = await fetch('https://localhost:7097/api/BookingList', {
+            const response = await fetch('https://localhost:7097/api/BookingList/AddBookings', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
             });
-            if (!response.ok) throw new Error('Error creating booking');
-            await response.json();
-            alert('Booking created successfully!');
+    
+            // Check if the response is not okay
+            if (!response.ok) {
+                const errorData = await response.json(); // Attempt to parse error message
+                throw new Error(errorData.error || 'Error creating booking');
+            }
+    
+            const data = await response.json();
+            alert(data.message || 'Booking created successfully!');
         } catch (error) {
             alert('Error creating booking: ' + error.message);
         } finally {
             setIsSubmitting(false);
         }
     };
-
+    
     if (loading) return <p>Loading date hours...</p>;
     if (error) return <p>{error}</p>;
 
@@ -89,9 +98,16 @@ const BookingForm = ({ SportId }) => {
         <>
             <h1>Create Booking</h1>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="clientId">Client ID:</label>
-                <input type="number" id="clientId" name="clientId" required /><br /><br />
-                
+                <div className="mb-3">
+                    <label className="form-label">User Id:</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        value={userId}
+                        onChange={(e) => setUserId(e.target.value)}
+                        required
+                    />
+                </div>
                 <fieldset>
                     <legend>Select Time Slot for Today:</legend>
                     {timeSlots.length > 0 ? (
@@ -105,7 +121,16 @@ const BookingForm = ({ SportId }) => {
                         <p>No available time slots for today.</p>
                     )}
                 </fieldset><br />
-                
+                <div className="mb-3">
+                    <label className="form-label">User Id List (comma-separated):</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        value={userIdList}
+                        onChange={(e) => setUserIdList(e.target.value)}
+                        required
+                    />
+                </div>
                 <button type="submit" disabled={isSubmitting}>Submit</button>
             </form>
         </>

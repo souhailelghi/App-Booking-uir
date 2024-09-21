@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function SportList() {
-  const [Sports, setSports] = useState([]);
+  const [sports, setSports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // Create navigate function
+  const navigate = useNavigate();
 
   // Fetch the Sport list from the API
   const fetchSports = async () => {
@@ -29,8 +29,8 @@ function SportList() {
     fetchSports();
   }, []);
 
-  const handleCardClick = (SportId) => {
-    navigate(`/pageBooking/${SportId}`); // Navigate to PageBooking with SportId
+  const handleCardClick = (sportId) => {
+    navigate(`/pageBooking/${sportId}`);
   };
 
   if (loading) {
@@ -45,34 +45,36 @@ function SportList() {
     <div className="container mt-5">
       <h1 className="mb-4">Sport List</h1>
       <div className="row">
-        {Sports.length > 0 ? (
-          Sports.map((Sport) => (
-            <div className="col-md-4 mb-4" key={Sport.id}>
-              <div className="card h-100" onClick={() => handleCardClick(Sport.id)}>
-                {Sport.imagePath && (
+        {sports.length > 0 ? (
+          sports.map((sport) => (
+            <div className="col-md-4 mb-4" key={sport.id}>
+              <div className="card h-100" onClick={() => handleCardClick(sport.id)}>
+                {sport.imagePath && (
                   <img
-                    src={Sport.imagePath}
+                    src={sport.imagePath}
                     className="card-img-top"
-                    alt={`${Sport.name}`}
+                    alt={`${sport.name}`}
                     style={{ height: "200px", objectFit: "cover" }}
                   />
                 )}
                 <div className="card-body">
-                  <h5 className="card-title">{Sport.name}</h5>
+                  <h5 className="card-title">{sport.name}</h5>
                   <p className="card-text">
-                    <strong>Sport Code:</strong> {Sport.sportCode}<br />
-                    <strong>Category ID:</strong> {Sport.categoryId}<br />
-                    <strong>Number of Players:</strong> {Sport.numberPlayer}<br />
-                    <strong>Delay Time:</strong> {Sport.delyTime}<br />
-                    <strong>Condition:</strong> {Sport.condition || 'N/A'}<br />
-                    <strong>Description:</strong> {Sport.description}<br />
-                    <strong>Price:</strong> ${Sport.price}<br />
+                    <strong>Sport Code:</strong> {sport.sportCode}<br />
+                    <strong>Category ID:</strong> {sport.categoryId}<br />
+                    <strong>Number of Players:</strong> {sport.numberPlayer}<br />
+                    <strong>Delay Time:</strong> {sport.delayTime}<br /> {/* Fixed typo */}
+                    <strong>Condition:</strong> {sport.condition || 'N/A'}<br />
+                    <strong>Description:</strong> {sport.description}<br />
+                    {sport.price !== undefined && (
+                      <><strong>Price:</strong> ${sport.price}<br /></>
+                    )}
                   </p>
                 </div>
                 <div className="card-footer">
                   <small className="text-muted">
-                    Created: {new Date(Sport.dateCreated).toLocaleString()}<br />
-                    Updated: {Sport.dateUpdated ? new Date(Sport.dateUpdated).toLocaleString() : 'N/A'}
+                    Created: {new Date(sport.dateCreated).toLocaleString()}<br />
+                    Updated: {sport.dateUpdated ? new Date(sport.dateUpdated).toLocaleString() : 'N/A'}
                   </small>
                 </div>
               </div>

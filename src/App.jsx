@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import CreateDateHours from "./Apps/CreateDateHours";
 import DateHoursList from "./Apps/DateHoursList";
@@ -7,6 +7,8 @@ import SportList from "./Apps/SportList";
 import PageBooking from "./Apps/PageBooking";
 import TodayDayName from "./Apps/TodayDayName";
 import DateHoursFetcher from "./Apps/DateHoursFetcher";
+import BookingForm from "./Apps/BookingForm";
+import SportForm from "./Apps/SportForm";
 
 function App() {
   // State to hold the name of the day
@@ -20,7 +22,7 @@ function App() {
   };
 
   // Update the day name when the component mounts
-  React.useEffect(() => {
+  useEffect(() => {
     updateDayName();
   }, []);
 
@@ -47,6 +49,12 @@ function App() {
             <li>
               <Link to="/dateHoursFetcher">Date Hours Fetcher</Link>
             </li>
+            <li>
+              <Link to="/bookingForm">Booking Form</Link>
+            </li>
+            <li>
+              <Link to="/sportForm">Sport Form</Link>
+            </li>
           </ul>
         </nav>
 
@@ -58,6 +66,8 @@ function App() {
           <Route path="/pageBooking/:SportId" element={<PageBooking />} />
           <Route path="/todayDayName" element={<TodayDayName dayName={dayName} />} />
           <Route path="/dateHoursFetcher" element={<DateHoursFetcher day={dayName} />} />
+          <Route path="/bookingForm" element={<BookingForm />} />
+          <Route path="/sportForm" element={<SportForm />} />
         </Routes>
       </div>
     </Router>
