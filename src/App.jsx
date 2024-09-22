@@ -12,6 +12,10 @@ import SportForm from "./Apps/SportForm";
 import ListOfSportAdmin from "./Apps/ListOfSportAdmin";
 import FetchDateHoursById from "./Apps/FetchDateHoursById";
 
+//  import AddPersonne from "./Personnes/AddPersonne";
+//  import GetPersonne from "./Personnes/GetPersonne";
+//  import GetAllPersonnes from "./Personnes/GetAllPersonnes";
+
 function App() {
   const [dayName, setDayName] = useState('');
 
@@ -33,7 +37,7 @@ function App() {
             {/* <li><Link to="/create">Create Date Hours</Link></li> */}
             <li><Link to="/list">Date Hours List</Link></li>
             {/* <li><Link to="/update">Update Date Hours</Link></li> */}
-            <li><Link to="/facilities">Sport List</Link></li>
+            <li><Link to="/sports">Sport List</Link></li>
             {/* <li><Link to="/todayDayName">Name of Today</Link></li> */}
             <li><Link to="/dateHoursFetcher">Date Hours Fetcher</Link></li>
             {/* <li><Link to="/bookingForm">Booking Form</Link></li> */}
@@ -47,7 +51,7 @@ function App() {
           <Route path="/create" element={<CreateDateHours />} />
           <Route path="/list" element={<DateHoursList />} />
           <Route path="/update" element={<UpdateDateHours />} />
-          <Route path="/facilities" element={<SportList />} />
+          <Route path="/sports" element={<SportList />} />
           <Route path="/pageBooking/:SportId" element={<PageBooking />} />
           <Route path="/todayDayName" element={<TodayDayName dayName={dayName} />} />
           <Route path="/dateHoursFetcher" element={<DateHoursFetcher day={dayName} />} />
@@ -59,6 +63,12 @@ function App() {
         </Routes>
       </div>
     </Router>
+    // <>
+    //   <h1>Sports Booking System</h1>
+    //         <AddPersonne />
+    //         <GetPersonne />
+    //         <GetAllPersonnes />
+    // </>
   );
 }
 

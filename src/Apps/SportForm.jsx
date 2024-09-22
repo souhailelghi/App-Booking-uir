@@ -5,7 +5,7 @@ const SportForm = () => {
     const navigate = useNavigate(); // Initialize useNavigate
     const [sportCode, setSportCode] = useState('');
     const [categoryId, setCategoryId] = useState('');
-    const [imagePath, setImagePath] = useState('');
+    const [image, setImage] = useState(null); // Change to null for file
     const [numberPlayer, setNumberPlayer] = useState('');
     const [delayTime, setDelayTime] = useState('');
     const [condition, setCondition] = useState('');
@@ -14,29 +14,31 @@ const SportForm = () => {
     const [error, setError] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    const handleImageChange = (e) => {
+        setImage(e.target.files[0]); // Get the first file
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         setIsSubmitting(true);
         setError(null);
 
-        const formData = {
-            sportCode: parseInt(sportCode),
-            CategoryId: parseInt(categoryId),
-            ImagePath: imagePath,
-            NumberPlayer: parseInt(numberPlayer),
-            DelayTime: parseInt(delayTime),
-            Condition: condition,
-            Name: name,
-            Description: description
-        };
+        const formData = new FormData(); // Create FormData object
+        formData.append('sportCode', sportCode);
+        formData.append('CategoryId', categoryId);
+        if (image) {
+            formData.append('Image', image); // Append the file
+        }
+        formData.append('NumberPlayer', numberPlayer);
+        formData.append('DelayTime', delayTime);
+        formData.append('Condition', condition);
+        formData.append('Name', name);
+        formData.append('Description', description);
 
         try {
             const response = await fetch('https://localhost:7097/api/SportList', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
+                body: formData // Use formData directly
             });
 
             if (!response.ok) {
@@ -81,12 +83,11 @@ const SportForm = () => {
                     />
                 </div>
                 <div className="mb-3">
-                    <label className="form-label">Image Path:</label>
+                    <label className="form-label">Image:</label>
                     <input
-                        type="text"
-                        className="form-control"
-                        value={imagePath}
-                        onChange={(e) => setImagePath(e.target.value)}
+                        type="file" // Change to file input
+                        accept="image/*" // Accept image files
+                        onChange={handleImageChange} // Handle image change
                         required
                     />
                 </div>

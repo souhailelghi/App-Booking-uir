@@ -49,9 +49,9 @@ function SportList() {
           sports.map((sport) => (
             <div className="col-md-4 mb-4" key={sport.id}>
               <div className="card h-100" onClick={() => handleCardClick(sport.id)}>
-                {sport.imagePath && (
+                {sport.image && (
                   <img
-                    src={sport.imagePath}
+                    src={`data:image/jpeg;base64,${sport.image}`}
                     className="card-img-top"
                     alt={`${sport.name}`}
                     style={{ height: "200px", objectFit: "cover" }}
@@ -60,7 +60,7 @@ function SportList() {
                 <div className="card-body">
                   <h5 className="card-title">{sport.name}</h5>
                   <p className="card-text">
-                    <strong>Sport Code:</strong> {sport.sportCode}<br />
+                   
                     <strong>Category ID:</strong> {sport.categoryId}<br />
                     <strong>Number of Players:</strong> {sport.numberPlayer}<br />
                     <strong>Delay Time:</strong> {sport.delayTime}<br /> {/* Fixed typo */}
