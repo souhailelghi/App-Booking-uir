@@ -9,19 +9,18 @@ import TodayDayName from "./Apps/TodayDayName";
 import DateHoursFetcher from "./Apps/DateHoursFetcher";
 import BookingForm from "./Apps/BookingForm";
 import SportForm from "./Apps/SportForm";
+import ListOfSportAdmin from "./Apps/ListOfSportAdmin";
+import FetchDateHoursById from "./Apps/FetchDateHoursById";
 
 function App() {
-  // State to hold the name of the day
   const [dayName, setDayName] = useState('');
 
-  // Function to update the day name
   const updateDayName = () => {
     const today = new Date();
     const dayNames = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
     setDayName(dayNames[today.getDay()]);
   };
 
-  // Update the day name when the component mounts
   useEffect(() => {
     updateDayName();
   }, []);
@@ -31,30 +30,16 @@ function App() {
       <div>
         <nav>
           <ul>
-            <li>
-              <Link to="/create">Create Date Hours</Link>
-            </li>
-            <li>
-              <Link to="/list">Date Hours List</Link>
-            </li>
-            <li>
-              <Link to="/update">Update Date Hours</Link>
-            </li>
-            <li>
-              <Link to="/facilities">Sport List</Link>
-            </li>
-            <li>
-              <Link to="/todayDayName">Name of Today</Link>
-            </li>
-            <li>
-              <Link to="/dateHoursFetcher">Date Hours Fetcher</Link>
-            </li>
-            <li>
-              <Link to="/bookingForm">Booking Form</Link>
-            </li>
-            <li>
-              <Link to="/sportForm">Sport Form</Link>
-            </li>
+            <li><Link to="/create">Create Date Hours</Link></li>
+            <li><Link to="/list">Date Hours List</Link></li>
+            <li><Link to="/update">Update Date Hours</Link></li>
+            <li><Link to="/facilities">Sport List</Link></li>
+            <li><Link to="/todayDayName">Name of Today</Link></li>
+            <li><Link to="/dateHoursFetcher">Date Hours Fetcher</Link></li>
+            <li><Link to="/bookingForm">Booking Form</Link></li>
+            <li><Link to="/sportForm">Sport Form</Link></li>
+            <li><Link to="/listOfSportAdmin">List Of Sport Admin</Link></li>
+            <li><Link to="/fetchDateHoursById">Fetch Date Hours By ID</Link></li>
           </ul>
         </nav>
 
@@ -68,6 +53,9 @@ function App() {
           <Route path="/dateHoursFetcher" element={<DateHoursFetcher day={dayName} />} />
           <Route path="/bookingForm" element={<BookingForm />} />
           <Route path="/sportForm" element={<SportForm />} />
+          <Route path="/listOfSportAdmin" element={<ListOfSportAdmin />} />
+          <Route path="/fetchDateHoursById" element={<FetchDateHoursById />} />
+          <Route path="/updateDateHours" element={<UpdateDateHours />} /> {/* Added this route */}
         </Routes>
       </div>
     </Router>
