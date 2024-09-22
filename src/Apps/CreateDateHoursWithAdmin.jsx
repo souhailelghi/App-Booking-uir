@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom"; // Import useLocation
+import { useLocation } from "react-router-dom"; 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-function CreateDateHours() {
+function CreateDateHoursWithAdmin() {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const sportId = queryParams.get('SportId'); // Extract SportId from query parameters
+    const sportId = queryParams.get('sportId'); 
 
+    console.log("the id is : " , sportId);
+    console.log("Location search:", location.search);
+    
     const [day, setDay] = useState("");
     const [timeRanges, setTimeRanges] = useState([{ hoursStart: "", hoursEnd: "" }]);
 
@@ -52,7 +55,7 @@ function CreateDateHours() {
 
     return (
         <div className="container mt-5">
-            <h1 className="mb-4">Create DateHours</h1>
+            <h1 className="mb-4">Create Date Hours With Admin</h1>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label className="form-label">Sport ID:</label>
@@ -62,6 +65,7 @@ function CreateDateHours() {
                         value={sportId} // Display SportId
                         readOnly // Make it read-only
                     />
+                    <p> the id is : {sportId}</p>
                 </div>
 
                 <div className="mb-3">
@@ -115,4 +119,4 @@ function CreateDateHours() {
     );
 }
 
-export default CreateDateHours;
+export default CreateDateHoursWithAdmin;

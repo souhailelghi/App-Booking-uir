@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const PageBooking = () => {
-    const { SportId } = useParams(); // Get the Sport ID from URL parameters
+    const { SportId } = useParams();
 
     return (
         <div>
@@ -20,7 +20,7 @@ const BookingForm = ({ SportId }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [userId, setUserId] = useState("");
-    const [userIdList, setUserIdList] = useState("");
+    const [userIds, setUserIds] = useState([""]); // Initialize with one input
 
     useEffect(() => {
         const fetchDateHours = async () => {
@@ -55,42 +55,53 @@ const BookingForm = ({ SportId }) => {
         setTimeSlots(slots);
     };
 
-  
+    const handleUserIdChange = (index, value) => {
+        const newUserIds = [...userIds];
+        newUserIds[index] = value;
+        setUserIds(newUserIds);
+    };
+
+    const addUserIdInput = () => {
+        setUserIds([...userIds, ""]); // Add a new empty input
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         setIsSubmitting(true);
-    
+
         const formData = {
             UserId: userId,
             SportId: parseInt(SportId),
             BookingTime: new Date().toISOString(),
             DateFrom: event.target.timeSlot.value.split('-')[1],
             DateTo: event.target.timeSlot.value.split('-')[2],
-            UserIdList: userIdList.split(',').map(id => id.trim()).filter(Boolean) // Convert to array of GUIDs
+            UserIdList: userIds.filter(id => id.trim() !== "") // Filter out empty IDs
         };
-    
+
         try {
             const response = await fetch('https://localhost:7097/api/BookingList/AddBookings', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
             });
-    
-            // Check if the response is not okay
+
             if (!response.ok) {
-                const errorData = await response.json(); // Attempt to parse error message
+                const errorData = await response.json();
                 throw new Error(errorData.error || 'Error creating booking');
             }
-    
+
             const data = await response.json();
             alert(data.message || 'Booking created successfully!');
+            // Clear form inputs after submission
+            setUserId('');
+            setUserIds(['']); // Reset to one input
         } catch (error) {
-            alert('Error creating booking: ' + error.message);
+            setError('Error creating booking: ' + error.message);
         } finally {
             setIsSubmitting(false);
         }
     };
-    
+
     if (loading) return <p>Loading date hours...</p>;
     if (error) return <p>{error}</p>;
 
@@ -122,17 +133,23 @@ const BookingForm = ({ SportId }) => {
                     )}
                 </fieldset><br />
                 <div className="mb-3">
-                    <label className="form-label">User Id List (comma-separated):</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        value={userIdList}
-                        onChange={(e) => setUserIdList(e.target.value)}
-                        required
-                    />
+                    <label className="form-label">User Id List:</label>
+                    {userIds.map((id, index) => (
+                        <div key={index} className="input-group mb-2">
+                            <input
+                                type="text"
+                                className="form-control"
+                                value={id}
+                                onChange={(e) => handleUserIdChange(index, e.target.value)}
+                                placeholder={`User ID ${index + 1}`}
+                            />
+                        </div>
+                    ))}
+                    <button type="button" className="btn btn-secondary" onClick={addUserIdInput}>+</button>
                 </div>
                 <button type="submit" disabled={isSubmitting}>Submit</button>
             </form>
+            {isSubmitting && <p>Submitting your booking...</p>}
         </>
     );
 };

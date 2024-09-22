@@ -34,13 +34,16 @@ const FetchDateHoursById = () => {
         fetchDateHours();
     }, [sportId]);
 
-    // const handleUpdateClick = (id) => {
-    //     navigate(`/updateDateHours?id=${id}`);
-    // };
     const handleUpdateClick = (id) => {
         navigate(`/updateDateHours?id=${id}&sportId=${sportId}`);
     };
 
+    // const handleCreateClick = () => {
+    //     navigate(`/createDateHoursWithAdmin?sportId=${sportId}`);
+    // };
+    const handleCreateClick = () => {
+        navigate(`/createDateHoursWithAdmin?sportId=${sportId}`);
+    };
     return (
         <div className="container mt-5">
             <h1 className="mb-4">Fetch Date Hours by Sport ID</h1>
@@ -87,6 +90,9 @@ const FetchDateHoursById = () => {
                             ))}
                         </tbody>
                     </table>
+                    <button className="btn btn-secondary" onClick={handleCreateClick}>
+                        Create a Date Hours
+                    </button>
                 </div>
             )}
         </div>
