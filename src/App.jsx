@@ -30,16 +30,16 @@ function App() {
       <div>
         <nav>
           <ul>
-            <li><Link to="/create">Create Date Hours</Link></li>
+            {/* <li><Link to="/create">Create Date Hours</Link></li> */}
             <li><Link to="/list">Date Hours List</Link></li>
-            <li><Link to="/update">Update Date Hours</Link></li>
+            {/* <li><Link to="/update">Update Date Hours</Link></li> */}
             <li><Link to="/facilities">Sport List</Link></li>
-            <li><Link to="/todayDayName">Name of Today</Link></li>
+            {/* <li><Link to="/todayDayName">Name of Today</Link></li> */}
             <li><Link to="/dateHoursFetcher">Date Hours Fetcher</Link></li>
-            <li><Link to="/bookingForm">Booking Form</Link></li>
+            {/* <li><Link to="/bookingForm">Booking Form</Link></li> */}
             <li><Link to="/sportForm">Sport Form</Link></li>
             <li><Link to="/listOfSportAdmin">List Of Sport Admin</Link></li>
-            <li><Link to="/fetchDateHoursById">Fetch Date Hours By ID</Link></li>
+            {/* <li><Link to="/fetchDateHoursById">Fetch Date Hours By ID</Link></li> */}
           </ul>
         </nav>
 

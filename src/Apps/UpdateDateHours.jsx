@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 function UpdateDateHours() {
   const [id, setId] = useState("");
-  const [SportId, setSportId] = useState("");
+  const [sportId, setSportId] = useState(""); // Change this from SportId to sportId
   const [day, setDay] = useState("");
   const [timeRanges, setTimeRanges] = useState([{ hoursStart: "", hoursEnd: "" }]);
 
@@ -12,7 +12,7 @@ function UpdateDateHours() {
       const response = await fetch(`https://localhost:7097/api/DateHours/${id}`);
       if (response.ok) {
         const data = await response.json();
-        setSportId(data.SportId);
+        setSportId(data.sportId); // Set the sportId from the fetched data
         setDay(data.day);
         setTimeRanges(data.timeRanges);
       } else {
@@ -26,9 +26,13 @@ function UpdateDateHours() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const idFromUrl = urlParams.get("id");
+    const sportIdFromUrl = urlParams.get("sportId"); // Get sportId from URL
     if (idFromUrl) {
       setId(idFromUrl);
       fetchDateHours(idFromUrl);
+    }
+    if (sportIdFromUrl) {
+      setSportId(sportIdFromUrl); // Set sportId from URL
     }
   }, []);
 
@@ -37,7 +41,7 @@ function UpdateDateHours() {
 
     const updatedDateHours = {
       id: parseInt(id),
-      SportId: parseInt(SportId),
+      sportId: parseInt(sportId), // Use the updated sportId
       day,
       timeRanges,
     };
@@ -91,7 +95,7 @@ function UpdateDateHours() {
           <input
             type="number"
             className="form-control"
-            value={SportId}
+            value={sportId} // Use the sportId from state
             onChange={(e) => setSportId(e.target.value)}
             required
           />

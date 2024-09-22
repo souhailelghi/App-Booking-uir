@@ -34,8 +34,11 @@ const FetchDateHoursById = () => {
         fetchDateHours();
     }, [sportId]);
 
+    // const handleUpdateClick = (id) => {
+    //     navigate(`/updateDateHours?id=${id}`);
+    // };
     const handleUpdateClick = (id) => {
-        navigate(`/updateDateHours?id=${id}`);
+        navigate(`/updateDateHours?id=${id}&sportId=${sportId}`);
     };
 
     return (
